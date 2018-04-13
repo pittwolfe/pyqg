@@ -586,6 +586,41 @@ class Model(PseudoSpectralKernel):
             function= (lambda self: self.q)
         )
 
+        self.add_diagnostic('u',
+            description='zonal velocity anomaly',
+            function= (lambda self: self.u)
+        )
+
+        self.add_diagnostic('v',
+            description='meridional velocity anomaly',
+            function= (lambda self: self.v)
+        )
+
+        self.add_diagnostic('uq',
+            description='zonal PV flux',
+            function= (lambda self: self.u*self.q)
+        )
+
+        self.add_diagnostic('vq',
+            description='meridional PV flux',
+            function= (lambda self: self.v*self.q)
+        )
+
+        self.add_diagnostic('uu',
+            description='zonal flux of zonal momentum',
+            function= (lambda self: self.u*self.u)
+        )
+
+        self.add_diagnostic('uv',
+            description='zonal flux of meridional momentum',
+            function= (lambda self: self.u*self.v)
+        )
+
+        self.add_diagnostic('vv',
+            description='meridional flux of meridional momentum',
+            function= (lambda self: self.v*self.v)
+        )
+
         self.add_diagnostic('EKEdiss',
             description='total energy dissipation by bottom drag',
             function= (lambda self: self.Hi[-1]/self.H*self.rek*(self.v[-1]**2 + self.u[-1]**2).mean())

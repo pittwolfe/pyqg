@@ -258,12 +258,15 @@ class LayeredModel(model.Model):
     def _calc_derived_fields(self):
 
         self.p = self.ifft(self.ph)
-        self.xi =self.ifft(-self.wv2*self.ph)
+        
+        self.xi = self.ifft(-self.wv2*self.ph)
         self.Jpxi = self._advect(self.xi, self.u, self.v)
         self.Jq = self._advect(self.q, self.u, self.v)
 
         self.Sph = np.einsum("ij,jkl->ikl",self.S,self.ph)
         self.Sp = self.ifft(self.Sph)
+        # thicknesses: just -H/f times the stretching term
+        self.h = -self.Hi[:,np.newaxis,np.newaxis]*self.Sp/self.f
         self.JSp = self._advect(self.Sp,self.u,self.v)
 
         self.phn = self.modal_projection(self.ph)
@@ -320,3 +323,18 @@ class LayeredModel(model.Model):
                     function = (lambda self:
                             -(self.Hi[:,np.newaxis,np.newaxis]*((self.ikQy -
                             self.ilQx)*(self.Sph.conj()*self.ph)).real).sum(axis=0)/self.H))
+                            
+        self.add_diagnostic('h',
+            description='thickness anomaly',
+            function= (lambda self: self.h)
+        )
+
+        self.add_diagnostic('uh',
+            description='zonal thickness flux',
+            function= (lambda self: self.u*self.h)
+        )
+
+        self.add_diagnostic('vh',
+            description='meridional thickness flux',
+            function= (lambda self: self.v*self.h)
+        )
