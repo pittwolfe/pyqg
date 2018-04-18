@@ -326,7 +326,7 @@ class LayeredModel(model.Model):
                             
         self.add_diagnostic('h',
             description='thickness anomaly',
-            function= (lambda self: self.h)
+            function= (lambda self: self.h.copy())
         )
 
         self.add_diagnostic('uh',

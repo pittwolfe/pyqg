@@ -583,17 +583,17 @@ class Model(PseudoSpectralKernel):
 
         self.add_diagnostic('q',
             description='QGPV',
-            function= (lambda self: self.q)
+            function= (lambda self: self.q.copy())
         )
 
         self.add_diagnostic('u',
             description='zonal velocity anomaly',
-            function= (lambda self: self.u)
+            function= (lambda self: self.u.copy())
         )
 
         self.add_diagnostic('v',
             description='meridional velocity anomaly',
-            function= (lambda self: self.v)
+            function= (lambda self: self.v.copy())
         )
 
         self.add_diagnostic('uq',
