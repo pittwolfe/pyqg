@@ -119,6 +119,7 @@ use_openmp = True
 if check_for_openmp() and use_openmp:
     extra_compile_args.append('-fopenmp')
     extra_link_args.append('-fopenmp')
+    extra_link_args.append('-Wl,-rpath,/opt/local/lib/gcc9/')
 else:
     warnings.warn('Could not link with openmp. Model will be slow.')
 
